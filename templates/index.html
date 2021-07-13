@@ -1,0 +1,270 @@
+<!Doctype html>
+<html lang="ko">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+
+    <!-- 구글폰트 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <title>OMO: Oh My Oculus</title>
+
+    <!-- style -->
+    <style type="text/css">
+        * {
+            font-family: 'Do Hyeon', sans-serif;
+        }
+
+        .wrap {
+            width: 900px;
+            margin: auto;
+        }
+
+        .comment {
+            color: blue;
+            font-weight: bold;
+        }
+
+        #post-box {
+            width: 500px;
+            margin: 20px auto;
+            padding: 50px;
+            border: black solid;
+            border-radius: 5px;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            showArticles();
+        });
+
+        // function openClose() {
+        //     if ($("#post-box").css("display") == "block") {
+        //         $("#post-box").hide();
+        //         $("#btn-post-box").text("포스팅 박스 열기");
+        //     } else {
+        //         $("#post-box").show();
+        //         $("#btn-post-box").text("포스팅 박스 닫기");
+        //     }
+        // }
+        //
+        // function postArticle() {
+        //     let url = $('#post-url').val()
+        //     let comment = $('#post-comment').val()
+        //
+        //     $.ajax({
+        //         type: "POST",
+        //         url: "/memo",
+        //         data: {
+        //             'url_give': url,
+        //             'comment_give': comment
+        //         },
+        //         success: function (response) { // 성공하면
+        //             alert(response["msg"]);
+        //             window.location.reload(); // 새로고침
+        //         }
+        //     })
+        // }
+
+        function showArticles() {
+            $('#cards-box').empty();
+
+            let price = $('#btn-price').val()
+            let genre = $('#btn-genre').val()
+            let gamemode = $('#btn-gamemode').val()
+            let playmode = $('#btn-playmode').val()
+            let language = $('#btn-language').val()
+            $.ajax({
+                type: "POST",
+                url: "/memo",
+                data: {
+                    'price': price,
+                    'genre': genre,
+                    'gamemode': gamemode,
+                    'playmode': playmode,
+                    'language': language
+                },
+                success: function (response) {
+                    let applications = response['all_apps']
+                    for (let i = 0; i < applications.length; i++) {
+                        let title = applications[i]['title']
+                        let img = applications[i]['img']
+                        // let desc = applications[i]['desc']
+                        let price = applications[i]['price']
+                        // let game_modes = applications[i]['game_mode']
+                        // let play_modes = applications[i]['play_mode']
+                        let category = applications[i]['category']
+                        let genre = applications[i]['genre']
+                        let languages = applications[i]['languages']
+                        let url = applications[i]['url']
+
+
+                        let temp_html = `<div class="card">
+                                                <img class="card-img-top"
+                                                     src="${img}"
+                                                     alt="Card image cap">
+                                                <div class="card-body">
+                                                    <a target="_blank" href="${url}" class="card-title">${title}</a>
+                                                    <p class="card-text">${category}</p>
+                                                    <p class="card-text">${genre}</p>
+                                                    <p class="card-text comment">${price}</p>
+                                                </div>
+                                            </div>`
+                        $('#cards-box').append(temp_html)
+
+                    }
+                }
+            })
+        }
+
+    </script>
+
+</head>
+
+<body>
+<div class="wrap">
+    <div class="jumbotron">
+        <h1 class="display-4">내 취향 오큘러스를 찾아라</h1>
+        <p class="lead">원하는 조건에 맞는 오큘러스를 검색할 수 있는 페이지입니다</p>
+        <hr class="my-4">
+        <div>
+            <div class="btn-group">
+                <select type="button" class="btn btn-outline-primary dropdown-toggle"
+                        data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false" id="btn-price">
+                    <option class="dropdown-item" selected value="">--가격--</option>
+                    <option class="dropdown-item" value="0">무료</option>
+                    <option class="dropdown-item" value="2">2만원 이하</option>
+                    <option class="dropdown-item" value="3">3만원 이하</option>
+                </select>
+            </div>
+<!--            <div class="btn-group">-->
+<!--                <button type="button" class="btn btn-outline-primary dropdown-toggle"-->
+<!--                        data-toggle="dropdown" aria-haspopup="true"-->
+<!--                        aria-expanded="false" id="btn-price">-->
+<!--                    가격-->
+<!--                </button>-->
+<!--                <div class="dropdown-menu" id="dropdown-price">-->
+<!--                    <a class="dropdown-item" href="#">무료</a>-->
+<!--                    <a class="dropdown-item" href="#">2만원 이하</a>-->
+<!--                    <a class="dropdown-item" href="#">3만원 이하</a>-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="btn-group">
+                <select type="button" class="btn btn-outline-success dropdown-toggle"
+                        data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false" id="btn-genre">
+                    <option class="dropdown-item" selected value="">--장르--</option>
+                    <option class="dropdown-item" value="슈팅">슈팅</option>
+                    <option class="dropdown-item" value="액션">액션</option>
+                    <option class="dropdown-item" value="우주">우주</option>
+                </select>
+            </div>
+            <div class="btn-group">
+                <select type="button" class="btn btn-outline-info dropdown-toggle"
+                        data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false" id="btn-gamemode">
+                    <option class="dropdown-item" selected value="">--게임모드--</option>
+                    <option class="dropdown-item" value="멀티 플레이">멀티 플레이</option>
+                    <option class="dropdown-item" value="싱글 플레이">싱글 플레이</option>
+                    <option class="dropdown-item" value="팀 플레이">팀 플레이</option>
+                </select>
+            </div>
+            <div class="btn-group">
+                <select type="button" class="btn btn-outline-warning dropdown-toggle"
+                        data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false" id="btn-playmode">
+                    <option class="dropdown-item" selected value="">--플레이모드--</option>
+                    <option class="dropdown-item" value="좌식 플레이">좌식 플레이</option>
+                    <option class="dropdown-item" value="스탠딩 플레이">스탠딩 플레이</option>
+                    <option class="dropdown-item" value="룸 플레이">룸 플레이</option>
+                </select>
+            </div>
+            <div class="btn-group">
+                <select type="button" class="btn btn-outline-danger dropdown-toggle"
+                        data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false" id="btn-language">
+                    <option class="dropdown-item" selected value="">--언어--</option>
+                    <option class="dropdown-item" value="한국어">한국어</option>
+                    <option class="dropdown-item" value="영어">영어</option>
+                </select>
+            </div>
+            <button type="button" class="btn btn-danger" onclick="showArticles()">Search</button>
+        </div>
+        <hr class="my-4">
+<!--        <table class="table table-sm">-->
+<!--            <thead>-->
+<!--            <tr>-->
+<!--                <th scope="col">contents</th>-->
+<!--                <th scope="col">selected</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--            <tr>-->
+<!--                <th scope="row">가격</th>-->
+<!--                <td id="selected-price">전체</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <th scope="row">장르</th>-->
+<!--                <td id="selected-genre">전체</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <th scope="row">게임모드</th>-->
+<!--                <td id="selected-gamemode">전체</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <th scope="row">플레이모드</th>-->
+<!--                <td id="selected-playmode">전체</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <th scope="row">언어</th>-->
+<!--                <td id="selected-language">전체</td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--        </table>-->
+
+        <!--                <p class="lead">-->
+        <!--                    <button onclick="openClose()" id="btn-post-box" type="button" class="btn btn-primary">포스팅 박스 열기-->
+        <!--                    </button>-->
+        <!--                </p>-->
+    </div>
+
+    <!--            <div id="post-box" class="form-post" style="display:none">-->
+    <!--                <div>-->
+    <!--                    <div class="form-group">-->
+    <!--                        <label for="post-url">아티클 URL</label>-->
+    <!--                        <input id="post-url" class="form-control" placeholder="">-->
+    <!--                    </div>-->
+    <!--                    <div class="form-group">-->
+    <!--                        <label for="post-comment">간단 코멘트</label>-->
+    <!--                        <textarea id="post-comment" class="form-control" rows="2"></textarea>-->
+    <!--                    </div>-->
+    <!--                    <button type="button" class="btn btn-primary" onclick="postArticle()">기사저장</button>-->
+    <!--                </div>-->
+    <!--            </div>-->
+
+    <div id="cards-box" class="card-columns">
+
+    </div>
+</div>
+</body>
+
+</html>
