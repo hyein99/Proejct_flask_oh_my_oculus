@@ -1,9 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 app = Flask(__name__)
 
-import requests
-from bs4 import BeautifulSoup
-
 from pymongo import MongoClient
 client = MongoClient('localhost', 27017)
 db = client.sparta
@@ -13,7 +10,7 @@ db = client.sparta
 def home():
    return render_template('index.html')
 
-@app.route('/memo', methods=['POST'])
+@app.route('/all', methods=['POST'])
 def listing():
     price = request.form['price']
     genre = request.form['genre']
@@ -21,18 +18,30 @@ def listing():
     playmode = request.form['playmode']
     language = request.form['language']
     doc = {}
-    if price == "0":
-        doc['price'] = 0
-    elif price == "2":
-        doc['price'] = { '$lte': 20000 }
-    elif price == "3":
-        doc['price'] = { '$lte': 30000 }
+    if price:
+        doc['price'] = { '$lte': int(price)*10000 }
     if genre:
-        print(genre)
-        doc['genre'] = { '$elemMatch': genre }
+        doc['genre'] = {'$in': [genre]}
+    if gamemode:
+        doc['game_mode'] = {'$in': [gamemode]}
+    if playmode:
+        doc['play_mode'] = {'$in': [playmode]}
+    if language:
+        doc['languages'] = {'$in': [language]}
 
     apps = list(db.oculus.find(doc, {'_id': False}))
     return jsonify({'all_apps':apps})
+
+@app.route('/app')
+def apphome():
+   return render_template('application.html')
+
+@app.route('/app', methods=['GET'])
+def application():
+    title_receive = request.args.get('title_give')
+    oapp = db.oculus.find_one({'title': title_receive},
+                              {'_id': False})
+    return jsonify({'oculus_app':oapp})
 
 ## API 역할을 하는 부분
 # @app.route('/memo', methods=['POST'])
