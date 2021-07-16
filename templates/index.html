@@ -27,6 +27,11 @@
 
     <title>OMO: Oh My Oculus</title>
 
+<!--    meta tag-->
+    <meta property="og:title" content="OMO: Oh My Oculus" />
+    <meta property="og:description" content="오큘러스 어플 정보 검색 사이트입니다. 원하는 조건에 맞는 어플을 검색하세요!" />
+    <meta property="og:image" content="{{ url_for('static', filename='ogimage.jpg') }}" />
+
     <!-- style -->
     <style type="text/css">
         * {
@@ -54,13 +59,11 @@
             -webkit-box-orient: vertical;
         }
 
-        #post-box {
-            width: 500px;
-            margin: 20px auto;
-            padding: 50px;
-            border: black solid;
-            border-radius: 5px;
+        .card:hover{
+            cursor: pointer;
+            background-color: #898989;
         }
+
     </style>
     <script>
         $(document).ready(function () {
@@ -92,7 +95,7 @@
                         let img_a = applications[i]['img']
                         let desc_a = applications[i]['desc']
                         let price_a = applications[i]['price']
-                        let category_a = applications[i]['category']
+                        let category_a = applications[i]['Category']
 
                         let temp_html = `<div class="card" style="width: 18rem;"
                                               onclick="parent.location='/app?title_give=${title_a}'">
@@ -149,26 +152,26 @@
                     <option class="dropdown-item" value="3">3만원 이하</option>
                 </select>
             </div>
-            <!--            <div class="btn-group">-->
-            <!--                <button type="button" class="btn btn-outline-primary dropdown-toggle"-->
-            <!--                        data-toggle="dropdown" aria-haspopup="true"-->
-            <!--                        aria-expanded="false" id="btn-price">-->
-            <!--                    가격-->
-            <!--                </button>-->
-            <!--                <div class="dropdown-menu" id="dropdown-price">-->
-            <!--                    <a class="dropdown-item" href="#">무료</a>-->
-            <!--                    <a class="dropdown-item" href="#">2만원 이하</a>-->
-            <!--                    <a class="dropdown-item" href="#">3만원 이하</a>-->
-            <!--                </div>-->
-            <!--            </div>-->
             <div class="btn-group">
                 <select type="button" class="btn btn-outline-success dropdown-toggle"
                         data-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false" id="btn-genre">
-                    <option class="dropdown-item" selected value="">--장르--</option>
-                    <option class="dropdown-item" value="슈팅">슈팅</option>
-                    <option class="dropdown-item" value="액션">액션</option>
-                    <option class="dropdown-item" value="우주">우주</option>
+                    <option class="dropdown-item" selected value="">----장르----</option>
+                    <option class="dropdown-item" value="Music">음악</option>
+                    <option class="dropdown-item" value="Action">액션</option>
+                    <option class="dropdown-item" value="Travel">여행</option>
+                    <option class="dropdown-item" value="Movie">영화</option>
+                    <option class="dropdown-item" value="Art/Creativity">예술/창의력</option>
+                    <option class="dropdown-item" value="Educational">교육</option>
+                    <option class="dropdown-item" value="Puzzle">퍼즐</option>
+                    <option class="dropdown-item" value="RPG">RPG</option>
+                    <option class="dropdown-item" value="Adventure">어드벤처</option>
+                    <option class="dropdown-item" value="Strategy">전략</option>
+                    <option class="dropdown-item" value="Fighting">격투</option>
+                    <option class="dropdown-item" value="Sports">스포츠</option>
+                    <option class="dropdown-item" value="Horror">공포</option>
+                    <option class="dropdown-item" value="Space/Universe">우주</option>
+                    <option class="dropdown-item" value="360 Experience (non-game)">360도 경험</option>
                 </select>
             </div>
             <div class="btn-group">
@@ -176,9 +179,9 @@
                         data-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false" id="btn-gamemode">
                     <option class="dropdown-item" selected value="">--게임모드--</option>
-                    <option class="dropdown-item" value="멀티 플레이">멀티 플레이</option>
-                    <option class="dropdown-item" value="싱글 플레이">싱글 플레이</option>
-                    <option class="dropdown-item" value="팀 플레이">팀 플레이</option>
+                    <option class="dropdown-item" value="Multiplayer">멀티 플레이</option>
+                    <option class="dropdown-item" value="Single User">싱글 플레이</option>
+                    <option class="dropdown-item" value="Co-op">팀 플레이</option>
                 </select>
             </div>
             <div class="btn-group">
@@ -186,9 +189,9 @@
                         data-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false" id="btn-playmode">
                     <option class="dropdown-item" selected value="">--플레이모드--</option>
-                    <option class="dropdown-item" value="좌식 플레이">좌식 플레이</option>
-                    <option class="dropdown-item" value="스탠딩 플레이">스탠딩 플레이</option>
-                    <option class="dropdown-item" value="룸 플레이">룸 플레이</option>
+                    <option class="dropdown-item" value="Sitting">좌식 플레이</option>
+                    <option class="dropdown-item" value="Standing">스탠딩 플레이</option>
+                    <option class="dropdown-item" value="Roomscale">룸 플레이</option>
                 </select>
             </div>
             <div class="btn-group">
@@ -196,8 +199,8 @@
                         data-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false" id="btn-language">
                     <option class="dropdown-item" selected value="">--언어--</option>
-                    <option class="dropdown-item" value="한국어">한국어</option>
-                    <option class="dropdown-item" value="영어">영어</option>
+                    <option class="dropdown-item" value="Korean">한국어</option>
+                    <option class="dropdown-item" value="English">영어</option>
                 </select>
             </div>
             <button type="button" class="btn btn-danger"
