@@ -16,8 +16,6 @@ soup = BeautifulSoup(res.content, 'html.parser')
 app_script = soup.find("script", {"type": ["application/ld+json"]}).contents[0]
 app_list = json.loads(app_script)['itemListElement']
 
-# 각 application url 접속
-for app in app_list:
-	url = app['url']
-	id = url.split('/')[-2]
-	print(id, url)
+with open('urls.txt', 'w') as f:
+    for app in app_list:
+        f.write('%s\n' % app['url'])
